@@ -1,0 +1,46 @@
+# Blender MTL File: 'aiai.blend'
+# Material Count: 4
+
+newmtl butt
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\coolg\\Downloads\\GameCube - Super Monkey Ball 2 - AiAi\\aiai_butt.png
+
+newmtl ear
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\coolg\\Downloads\\GameCube - Super Monkey Ball 2 - AiAi\\aiai_ear.png
+
+newmtl face
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd aiai_face.png
+
+newmtl shirt
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\coolg\\Downloads\\GameCube - Super Monkey Ball 2 - AiAi\\aiai_shirt_01.png
