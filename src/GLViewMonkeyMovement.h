@@ -119,6 +119,11 @@ public:
     RtMidiIn midi_in;
     float midi_data1 = 0.f;
     float midi_data2 = 0.f;
+    float midi_rotation = 35.f;
+    float midi_tiltation = 0.f;
+    float currt = 0.f;
+    float currr = 0.f;
+    static void midiCallback(double deltatime, std::vector<unsigned char>* message, void* userDatas);
 
 protected:
    GLViewMonkeyMovement( const std::vector< std::string >& args );

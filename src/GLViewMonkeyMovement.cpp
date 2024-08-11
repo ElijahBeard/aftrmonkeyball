@@ -33,6 +33,7 @@
 #include "WOImGui.h" //GUI Demos also need to #include "AftrImGuiIncludes.h"
 #include "AftrImGuiIncludes.h"
 #include "AftrGLRendererBase.h"
+#include <cmath>
 
 using namespace Aftr;
 
@@ -94,50 +95,25 @@ void GLViewMonkeyMovement::updateWorld()
    //MOVEMENT
    {
        //std::cout << cam->getPose() << std::endl;
-       if (w_key && time_start) {
-           ball_body->body->addForce(PxVec3(-30, 0, 0));
-
+       float move_velocity = std::lerp(0.0f, 40.0f, midi_data2 / 127.0f);
+       if (midi_data1 == 1 && time_start) {
+           ball_body->body->addForce(PxVec3(-move_velocity, 0, 0));
        }
 
-       if (a_key && time_start)
+       if (midi_data1 == 0 && time_start)
        {
-           ball_body->body->addForce(PxVec3(0, -30, 0));
-
-           if (left_current_angle < left_target_angle) {
-               float delta = std::min(tilt_speed, left_target_angle - left_current_angle);
-               cam->rotateAboutGlobalZ(delta * Aftr::DEGtoRAD);
-               left_current_angle += delta;
-           }
-       }
-       else {
-           if (left_current_angle >= 0) {
-               float delta = std::min(tilt_speed, left_current_angle);
-               cam->rotateAboutGlobalZ(-delta * Aftr::DEGtoRAD);
-               left_current_angle -= delta;
-           }
+           ball_body->body->addForce(PxVec3(0, -move_velocity, 0));
        }
 
-       if (s_key && time_start) {
-           ball_body->body->addForce(PxVec3(30, 0, 0));
+       if (midi_data1 == 3 && time_start) {
+           ball_body->body->addForce(PxVec3(move_velocity, 0, 0));
 
        }
 
-       if (d_key && time_start) {
-           ball_body->body->addForce(PxVec3(0, 30, 0));
+       if (midi_data1 == 2 && time_start) {
+           ball_body->body->addForce(PxVec3(0, move_velocity, 0));
+       }
 
-           if (right_current_angle < right_target_angle) {
-               float delta = std::min(tilt_speed, right_target_angle - right_current_angle);
-               cam->rotateAboutGlobalZ(-delta * Aftr::DEGtoRAD);
-               right_current_angle += delta;
-           }
-       }
-       else {
-           if (right_current_angle >= 0) {
-               float delta = std::min(tilt_speed, right_current_angle);
-               cam->rotateAboutGlobalZ(delta * Aftr::DEGtoRAD);
-               right_current_angle -= delta;
-           }
-       }
    }
 
    //PHYSX
@@ -155,29 +131,30 @@ void GLViewMonkeyMovement::updateWorld()
    }
    //CAMERA
    {
-       if (w_key && time_start) {
-           if (dir_angle < 50) {
-               dir_angle += 3;
-           }
+       //FOWARD
+       if (midi_data1 == 1) {
+           midi_rotation = std::lerp(35.0f, 90.0f, midi_data2 / 127.0f);
        }
-       else if (s_key && time_start) {
-           if (dir_angle > 10) {
-               dir_angle -= 3;
-           }
-
+       //BACK
+       if (midi_data1 == 3) {
+           midi_rotation = std::lerp(35.0f, 5.0f, midi_data2 / 127.0f);
        }
-       else if (dir_angle > 30) {
-           dir_angle -= 3;
+       //LEFT
+       if (midi_data1 == 0) {
+           midi_tiltation = std::lerp(0.f, -90.f, midi_data2 / 127.0f);
+           std::cout << midi_tiltation;
        }
-       else if (dir_angle < 30) {
-           dir_angle += 3;
+       //RIGHT
+       if (midi_data1 == 2) {
+           midi_tiltation = std::lerp(0.f, 90.f, midi_data2 / 127.0f);
        }
-       else {
-           dir_angle = 30;
-       }
-       float deltax = dir_angle - currx;
-       currx = dir_angle;
-       anchor->rotateAboutRelY(-deltax * Aftr::DEGtoRAD);
+       float deltay = midi_rotation - currr;
+       float deltax = midi_tiltation - currt;
+       currr = midi_rotation;
+       currt = midi_tiltation;
+       anchor->rotateAboutRelY(-deltay * Aftr::DEGtoRAD);
+       cam->rotateAboutGlobalZ(-deltax * Aftr::DEGtoRAD);
+       //anchor->rotateAboutRelX(deltax * Aftr::DEGtoRAD);
        //aiai->setPosition(ball->getPosition());
    }
 
@@ -356,6 +333,13 @@ void GLViewMonkeyMovement::onKeyUp( const SDL_KeyboardEvent& key )
 
 }
 
+void Aftr::GLViewMonkeyMovement::midiCallback(double deltatime, std::vector<unsigned char>* message, void* userDatas) {
+    GLViewMonkeyMovement* instance = static_cast<GLViewMonkeyMovement*>(userDatas);
+    if (message->size() > 1) {
+        instance->midi_data1 = static_cast<float>((*message)[1]);
+        instance->midi_data2 = static_cast<float>((*message)[2]);
+    }
+}
 
 void Aftr::GLViewMonkeyMovement::loadMap()
 {
@@ -373,7 +357,10 @@ void Aftr::GLViewMonkeyMovement::loadMap()
    anchor->setPosition(0,0,20);
 
 
-
+   //MIDI
+   midi_in.openPort(1);
+   midi_in.setCallback(&GLViewMonkeyMovement::midiCallback, this);
+   midi_in.ignoreTypes(false, false, false);
    //TEXT
    timer_shaddow = WOGUILabel::New(nullptr);
    timer_shaddow->setText("some text");
@@ -476,7 +463,6 @@ void Aftr::GLViewMonkeyMovement::loadMap()
        //PxRigidStatic* groundPlane = PxCreatePlane(*p, PxPlane(0, 0, 1, 0), *gMaterial2);//good for the grass
        //scene->addActor(*groundPlane);
    }
-
 
    //Stage 01
    {
