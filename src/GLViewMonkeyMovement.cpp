@@ -416,7 +416,7 @@ void Aftr::GLViewMonkeyMovement::loadMap()
        std::string roll_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/roll.wav";
        roll = audio_engine->play2D(roll_path.c_str(),true,false,true);
        std::string music_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/ost.wav";
-       audio_engine->play2D(music_path.c_str());
+       //audio_engine->play2D(music_path.c_str());
    }
    //SKYBOX
    {
