@@ -78,7 +78,7 @@ public:
     float right_current_angle = 0.f;
     float tilt_speed = 5.f;
     Aftr::Mat4 staticpose;
-    WO* anchor = WO::New();
+    WO* anchor = nullptr;
     float offset_radius = 15.0f;
     float angle = 0.01f;
     float currx = 0.f;

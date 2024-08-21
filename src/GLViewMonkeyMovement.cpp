@@ -194,11 +194,9 @@ void GLViewMonkeyMovement::updateWorld()
    //anchor->rotateAboutGlobalY(0.01f);
    float angle = anchor->getPose().getAngleOfRotationAboutAxisOfRotationRads();
    //std::cout << angle << std::endl;
-   // Calculate new position using trigonometric functions
    float x = offset_radius * cos(angle) + anchor->getPosition().x;
    float y = 0.0f + anchor->getPosition().y;
    float z = offset_radius * sin(angle) + anchor->getPosition().z;
-   // Set the new position for the camera
    Vector newPosition(x, y, z);
    if (ball->getPosition().z > -6 && !finished) {
        cam->setPosition(newPosition);
@@ -256,7 +254,7 @@ void GLViewMonkeyMovement::updateWorld()
    click += 0.016;
    if (click > 1.0f && !finished) {
        std::string sec_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/sec.wav";
-       audio_engine->play2D(sec_path.c_str());
+       //audio_engine->play2D(sec_path.c_str());
        click = 0;
    }
    if (click > -1.5) {
@@ -370,9 +368,8 @@ void Aftr::GLViewMonkeyMovement::loadMap()
    this->glRenderer->isUsingShadowMapping( false ); //set to TRUE to enable shadow mapping, must be using GL 3.2+
 
    this->cam->setPosition(10,0,0);
+   anchor = WO::New();
    anchor->setPosition(0,0,20);
-
-
 
    //TEXT
    timer_shaddow = WOGUILabel::New(nullptr);
