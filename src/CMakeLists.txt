@@ -51,8 +51,6 @@ IF( WIN32 ) #MSVC Compiler library paths
                     debug "${PHYSX_DEBUG_LIBS}"
                optimized "${AFTR_USERLAND_LIB_PATH}/irrKlang.lib"
                      debug "${AFTR_USERLAND_LIB_PATH}/irrKlang.lib"
-               optimized "${AFTR_USERLAND_LIB_PATH}/portaudio_x64.lib"
-                     debug "${AFTR_USERLAND_LIB_PATH}/portaudio_x64.lib"
                optimized "${AFTR_USERLAND_LIB_PATH}/rtmidi/Release/rtmidi.lib"
                      debug "${AFTR_USERLAND_LIB_PATH}/rtmidi/Debug/rtmidi.lib"
                 #optimized "${CMAKE_SOURCE_DIR}/lib${AFTR_NBITS}/myLocalLib.lib" #Located in ../lib64/ or ../lib32/
@@ -77,7 +75,6 @@ TARGET_INCLUDE_DIRECTORIES( ${PROJECT_NAME} PRIVATE
                            "${AFTR_USR_INCLUDE_DIR}/../irrklang/include"
                            "${AFTR_USR_INCLUDE_DIR}/../physx/physx/include/"
                            "${AFTR_USR_INCLUDE_DIR}/../rtmidi-master/"
-                           "${AFTR_USR_INCLUDE_DIR}/../portaudio/include/"
                            #"${CMAKE_SOURCE_DIR}/../my3rdPartyLib/include/"
                           )
 

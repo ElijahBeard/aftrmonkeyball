@@ -233,7 +233,7 @@ void GLViewMonkeyMovement::updateWorld()
    click += 0.016;
    if (click > 1.0f && !finished) {
        std::string sec_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/sec.wav";
-       audio_engine->play2D(sec_path.c_str());
+       //audio_engine->play2D(sec_path.c_str());
        click = 0;
    }
    if (click > -1.5) {
@@ -358,7 +358,7 @@ void Aftr::GLViewMonkeyMovement::loadMap()
 
 
    //MIDI
-   midi_in.openPort(1);
+   midi_in.openPort(0);
    midi_in.setCallback(&GLViewMonkeyMovement::midiCallback, this);
    midi_in.ignoreTypes(false, false, false);
    //TEXT
