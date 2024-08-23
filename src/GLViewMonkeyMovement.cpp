@@ -236,25 +236,24 @@ void GLViewMonkeyMovement::updateWorld()
    seconds = static_cast<int>(elapsed_time);
    milliseconds = static_cast<int>((elapsed_time - seconds) * 1000);
 
-   //AUDIO
    //ROLLING
-   float velocity = ball_body->body->getAngularVelocity().magnitude();
-   float playback = 0.5f + (velocity / 50) * 1.5f;
-   roll->setVolume(velocity);
-   roll->setPlaybackSpeed(playback);
-   //BOUNCING
-   float velocity_delta = velocity - previous_velocity;
-   if (std::abs(velocity_delta) > 3) {
-       std::string spike_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/spike.wav";
-       audio_engine->play2D(spike_path.c_str());
-   } 
-   previous_velocity = velocity;
+    float velocity = ball_body->body->getAngularVelocity().magnitude();
+    float playback = 0.5f + (velocity / 50) * 1.5f;
+    roll->setVolume(velocity);
+    roll->setPlaybackSpeed(playback);
+    //BOUNCING
+    float velocity_delta = velocity - previous_velocity;
+    if (std::abs(velocity_delta) > 3) {
+        std::string spike_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/spike.wav";
+        audio_engine->play2D(spike_path.c_str());
+    } 
+    previous_velocity = velocity;
 
    //TIMER
    click += 0.016;
    if (click > 1.0f && !finished) {
        std::string sec_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/sec.wav";
-       //audio_engine->play2D(sec_path.c_str());
+       audio_engine->play2D(sec_path.c_str());
        click = 0;
    }
    if (click > -1.5) {
@@ -273,6 +272,13 @@ void GLViewMonkeyMovement::updateWorld()
    }
    ready->setText(ready_text);
    go->setText(go_text);
+
+   //SHADOW RAYCASTING
+   Vector start_pos = ball->getPosition();
+   Vector shadow_pos;
+   Vector r_tail = Vector(ball->getPosition().x, ball->getPosition().y, -20);
+   ball->getModel()->getNearestPointWhereLineIntersectsMe(ball->getPosition()-1, r_tail, shadow_pos);
+   std::cout <<  "BALL: " << ball->getPosition() << " SHADOW: " << shadow_pos << std::endl;
 }
 
 void GLViewMonkeyMovement::onResizeWindow( GLsizei width, GLsizei height )
@@ -368,7 +374,6 @@ void Aftr::GLViewMonkeyMovement::loadMap()
    this->glRenderer->isUsingShadowMapping( false ); //set to TRUE to enable shadow mapping, must be using GL 3.2+
 
    this->cam->setPosition(10,0,0);
-   anchor = WO::New();
    anchor->setPosition(0,0,20);
 
    //TEXT

@@ -78,11 +78,13 @@ public:
     float right_current_angle = 0.f;
     float tilt_speed = 5.f;
     Aftr::Mat4 staticpose;
-    WO* anchor = nullptr;
+    WO* anchor = WO::New();
     float offset_radius = 15.0f;
     float angle = 0.01f;
     float currx = 0.f;
     float dir_angle = 45.f;
+    
+    WO* a1 = WO::New(ManagerEnvironmentConfiguration::getLMM() + "models/anchor.obj");
 
     //Models
     WO* environment = nullptr;
