@@ -96,11 +96,12 @@ void GLViewMonkeyMovement::updateWorld()
    {
        //std::cout << cam->getPose() << std::endl;
        float move_velocity = std::lerp(0.0f, 40.0f, midi_data2 / 127.0f);
-       if (midi_data1 == 1 && time_start) {
+       std::cout << midi_data1 << std::endl;
+       if (midi_data1 == 87 && time_start) {
            ball_body->body->addForce(PxVec3(-move_velocity, 0, 0));
        }
 
-       if (midi_data1 == 0 && time_start)
+       if (midi_data1 == 1 && time_start)
        {
            ball_body->body->addForce(PxVec3(0, -move_velocity, 0));
        }
@@ -110,7 +111,7 @@ void GLViewMonkeyMovement::updateWorld()
 
        }
 
-       if (midi_data1 == 2 && time_start) {
+       if (midi_data1 == 81 && time_start) {
            ball_body->body->addForce(PxVec3(0, move_velocity, 0));
        }
 
@@ -171,11 +172,10 @@ void GLViewMonkeyMovement::updateWorld()
    //anchor->rotateAboutGlobalY(0.01f);
    float angle = anchor->getPose().getAngleOfRotationAboutAxisOfRotationRads();
    //std::cout << angle << std::endl;
-   // Calculate new position using trigonometric functions
    float x = offset_radius * cos(angle) + anchor->getPosition().x;
    float y = 0.0f + anchor->getPosition().y;
    float z = offset_radius * sin(angle) + anchor->getPosition().z;
-   // Set the new position for the camera
+
    Vector newPosition(x, y, z);
    if (ball->getPosition().z > -6 && !finished) {
        cam->setPosition(newPosition);
@@ -258,7 +258,6 @@ void GLViewMonkeyMovement::onResizeWindow( GLsizei width, GLsizei height )
 {
    GLView::onResizeWindow( width, height ); //call parent's resize method.
 }
-
 
 void GLViewMonkeyMovement::onMouseDown( const SDL_MouseButtonEvent& e )
 {
@@ -414,7 +413,7 @@ void Aftr::GLViewMonkeyMovement::loadMap()
    //SFX
    {
        std::string roll_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/roll.wav";
-       roll = audio_engine->play2D(roll_path.c_str(),true,false,true);
+       roll = audio_engine->play2D(roll_path.c_str(),false,false,true);
        std::string music_path = ManagerEnvironmentConfiguration::getLMM() + "sounds/ost.wav";
        //audio_engine->play2D(music_path.c_str());
    }
@@ -579,6 +578,3 @@ bool GLViewMonkeyMovement::is_hit_target(Vector ball, Vector goal) {
     return dist_sq <= 1;
 }
 
-void update_text_instance(WOGUILabel* text) {
-
-};
